@@ -12,6 +12,7 @@ function Timer() {
   const [minutess, setMinutess] = useState(initialMinutes);
   const [secondss, setSecondss] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [enjuuk, setEnjuuk] = useState(true);
 
   useEffect(() => {
     let countdown;
@@ -67,9 +68,17 @@ function Timer() {
   };
 
   const resetTimer = () => {
+    setA((prevA) => (prevA = 0));
     setIsActive(false);
     setMinutess(initialMinutes);
+    setIsRunning(false);
+    setMinutes(0);
+    setSeconds(0);
+    setFail(false);
+    setMilliseconds(0);
+    setMinutess(0);
     setSecondss(0);
+    setEnjuuk(true);
   };
 
   const formatTime = (time) => (time < 10 ? `0${time}` : time);
@@ -84,10 +93,12 @@ function Timer() {
       setSeconds(0);
       setFail(false);
       setMilliseconds(0);
+      setEnjuuk(false);
     }
   };
   const stop = () => {
     setIsRunning(false);
+    setEnjuuk(true);
   };
   const failClick = () => {
     if (a === 5) {
@@ -101,10 +112,6 @@ function Timer() {
     setA((prevA) => prevA + 1);
   };
 
-  const countReset = () => {
-    setA((prevA) => (prevA = 0));
-  };
-
   return (
     <div>
       {fail ? (
@@ -116,14 +123,14 @@ function Timer() {
           <span>{milliseconds < 100 ? `0${milliseconds}` : milliseconds}</span>
         </div>
       )}
+      {enjuuk ? <button onClick={start}>Start</button> : <div></div>}
 
-      <button onClick={start}>Start</button>
       <button onClick={stop}>Stop</button>
 
       <button onClick={failClick}>R</button>
       <div>try count</div>
       <h1>{a} / 5</h1>
-      <button onClick={countReset}>Reset</button>
+      <button onClick={resetTimer}>Reset</button>
       <div>
         {/* /// */}
         <div style={{ fontSize: 40 }}>
@@ -134,9 +141,6 @@ function Timer() {
           <div className="buttons">
             <button onClick={startTimer} disabled={isActive}>
               Start
-            </button>
-            <button onClick={resetTimer} disabled={!isActive}>
-              Reset
             </button>
           </div>
         </div>
