@@ -5,12 +5,7 @@ function Timer() {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [milliseconds, setMilliseconds] = useState(0);
-  const [minutess, setMinutess] = useState(initialMinutes);
-  const [secondss, setSecondss] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-  const [enjuuk, setEnjuuk] = useState(true);
   const [a, setA] = useState(0);
-  const initialMinutes = 5;
   const [fail, setFail] = useState({
     value1: false,
     value2: false,
@@ -18,6 +13,15 @@ function Timer() {
     value4: false,
     value5: false,
   });
+  const [switchFail, setSwitchFail] = useState(false);
+  const arr = [];
+  ///count 5 minutes
+  const initialMinutes = 5;
+  const [minutess, setMinutess] = useState(initialMinutes);
+  const [secondss, setSecondss] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const [enjuuk, setEnjuuk] = useState(true);
+  const [dta, setDta] = useState([]);
   const [list, setList] = useState({
     value1: "00:00.00",
     value2: "00:00.00",
@@ -98,6 +102,7 @@ function Timer() {
     setMinutess(0);
     setSecondss(0);
     setEnjuuk(true);
+    setSwitchFail(false);
   };
 
   const formatTime = (time) => (time < 10 ? `0${time}` : time);
@@ -111,7 +116,9 @@ function Timer() {
       setSeconds(0);
       setMilliseconds(0);
       setEnjuuk(false);
+      setSwitchFail(false);
     }
+    arr.push(a + 1);
   };
   const stop = () => {
     setIsRunning(false);
@@ -195,18 +202,38 @@ function Timer() {
     switch (a) {
       case 1:
         setFail({ ...fail, value1: true });
+        setEnjuuk(true);
+        setSwitchFail(true);
+        setIsRunning(false);
+        setList({ ...list, value1: "R" });
         break;
       case 2:
         setFail({ ...fail, value2: true });
+        setEnjuuk(true);
+        setSwitchFail(true);
+        setIsRunning(false);
+        setList({ ...list, value2: "R" });
         break;
       case 3:
         setFail({ ...fail, value3: true });
+        setEnjuuk(true);
+        setSwitchFail(true);
+        setIsRunning(false);
+        setList({ ...list, value3: "R" });
         break;
       case 4:
         setFail({ ...fail, value4: true });
+        setEnjuuk(true);
+        setSwitchFail(true);
+        setIsRunning(false);
+        setList({ ...list, value4: "R" });
         break;
       case 5:
         setFail({ ...fail, value5: true });
+        setEnjuuk(true);
+        setSwitchFail(true);
+        setIsRunning(false);
+        setList({ ...list, value5: "R" });
         break;
 
       default:
@@ -214,6 +241,7 @@ function Timer() {
     }
     if (a === 5) {
       setIsRunning(false);
+      setSwitchFail(true);
     }
     // setA((prevA) => prevA + 1);
   };
@@ -223,20 +251,22 @@ function Timer() {
   console.log(fail[0]);
   return (
     <div>
-      {`${fail[a]}` ? (
+      {Object.values(fail)[a] ? (
+        <div></div>
+      ) : switchFail ? (
         <div style={{ fontSize: "100px" }}>R</div>
       ) : (
         <div style={{ fontSize: "100px" }}>
           <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:
-          <span>{seconds < 10 ? `0${seconds}` : seconds}</span>.
+          <span>{seconds < 10 ? ` 0${seconds}` : seconds}</span>.
           <span>{milliseconds < 100 ? `0${milliseconds}` : milliseconds}</span>
         </div>
       )}
       {enjuuk ? <button onClick={start}>Start</button> : <div></div>}
 
       <button onClick={stop}>Stop</button>
-
-      <button onClick={failClick}>R</button>
+      {isRunning ? <button onClick={failClick}>R</button> : <div></div>}
+      {/* <button onClick={failClick}>R</button> */}
       <div>try count</div>
       <h1>{a} / 5</h1>
       <button onClick={resetTimer}>Reset</button>
@@ -254,12 +284,14 @@ function Timer() {
           </div>
         </div>
         {/* //// */}
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div>1 : {fail.value1 ? "R" : list.value1} </div>
-          <div>2 : {fail.value2 ? "R" : list.value2}</div>
-          <div>3 : {fail.value3 ? "R" : list.value3}</div>
-          <div>4 : {fail.value4 ? "R" : list.value4}</div>
-          <div>5 : {fail.value5 ? "R" : list.value5}</div>
+        <div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {Object.entries(list).map(([key, value]) => {
+              const lastChar = key.slice(-1);
+              const cleanValue = value.toString().replace(/[,]/g, "");
+              return <div>{`${lastChar}. ${cleanValue}`}</div>;
+            })}
+          </div>
         </div>
         {/* //// */}
       </div>
