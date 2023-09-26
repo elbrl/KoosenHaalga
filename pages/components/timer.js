@@ -5,14 +5,26 @@ function Timer() {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [milliseconds, setMilliseconds] = useState(0);
-  const [a, setA] = useState(0);
-  const [fail, setFail] = useState(false);
-  ///count 5 minutes
-  const initialMinutes = 5;
   const [minutess, setMinutess] = useState(initialMinutes);
   const [secondss, setSecondss] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [enjuuk, setEnjuuk] = useState(true);
+  const [a, setA] = useState(0);
+  const initialMinutes = 5;
+  const [fail, setFail] = useState({
+    value1: false,
+    value2: false,
+    value3: false,
+    value4: false,
+    value5: false,
+  });
+  const [list, setList] = useState({
+    value1: "00:00.00",
+    value2: "00:00.00",
+    value3: "00:00.00",
+    value4: "00:00.00",
+    value5: "00:00.00",
+  });
 
   useEffect(() => {
     let countdown;
@@ -68,6 +80,13 @@ function Timer() {
   };
 
   const resetTimer = () => {
+    setList({
+      value1: "00:00.00",
+      value2: "00:00.00",
+      value3: "00:00.00",
+      value4: "00:00.00",
+      value5: "00:00.00",
+    });
     setA((prevA) => (prevA = 0));
     setIsActive(false);
     setMinutess(initialMinutes);
@@ -88,10 +107,8 @@ function Timer() {
     } else {
       setIsRunning(true);
       tryCount();
-      setFail(false);
       setMinutes(0);
       setSeconds(0);
-      setFail(false);
       setMilliseconds(0);
       setEnjuuk(false);
     }
@@ -99,25 +116,117 @@ function Timer() {
   const stop = () => {
     setIsRunning(false);
     setEnjuuk(true);
+    switch (a) {
+      case 1:
+        setList({
+          value1: [
+            minutes.toString().length == 1 ? `0${minutes}` : minutes,
+            ":",
+            seconds.toString().length == 1 ? `0${seconds}` : seconds,
+            ".",
+            milliseconds.toString().length == 2
+              ? `0${milliseconds}`
+              : milliseconds,
+          ],
+        });
+        break;
+      case 2:
+        setList({
+          ...list,
+          value2: [
+            minutes.toString().length == 1 ? `0${minutes}` : minutes,
+            ":",
+            seconds.toString().length == 1 ? `0${seconds}` : seconds,
+            ".",
+            milliseconds.toString().length == 2
+              ? `0${milliseconds}`
+              : milliseconds,
+          ],
+        });
+        break;
+      case 3:
+        setList({
+          ...list,
+          value3: [
+            minutes.toString().length == 1 ? `0${minutes}` : minutes,
+            ":",
+            seconds.toString().length == 1 ? `0${seconds}` : seconds,
+            ".",
+            milliseconds.toString().length == 2
+              ? `0${milliseconds}`
+              : milliseconds,
+          ],
+        });
+        break;
+      case 4:
+        setList({
+          ...list,
+          value4: [
+            minutes.toString().length == 1 ? `0${minutes}` : minutes,
+            ":",
+            seconds.toString().length == 1 ? `0${seconds}` : seconds,
+            ".",
+            milliseconds.toString().length == 2
+              ? `0${milliseconds}`
+              : milliseconds,
+          ],
+        });
+        break;
+      case 5:
+        setList({
+          ...list,
+          value5: [
+            minutes.toString().length == 1 ? `0${minutes}` : minutes,
+            ":",
+            seconds.toString().length == 1 ? `0${seconds}` : seconds,
+            ".",
+            milliseconds.toString().length == 2
+              ? `0${milliseconds}`
+              : milliseconds,
+          ],
+        });
+        break;
+
+      default:
+        break;
+    }
   };
   const failClick = () => {
+    switch (a) {
+      case 1:
+        setFail({ ...fail, value1: true });
+        break;
+      case 2:
+        setFail({ ...fail, value2: true });
+        break;
+      case 3:
+        setFail({ ...fail, value3: true });
+        break;
+      case 4:
+        setFail({ ...fail, value4: true });
+        break;
+      case 5:
+        setFail({ ...fail, value5: true });
+        break;
+
+      default:
+        break;
+    }
     if (a === 5) {
       setIsRunning(false);
-    } else {
-      setA((prevA) => prevA + 1);
-      setFail(true);
     }
+    // setA((prevA) => prevA + 1);
   };
   const tryCount = () => {
     setA((prevA) => prevA + 1);
   };
-
+  console.log(fail[0]);
   return (
     <div>
-      {fail ? (
-        <div style={{ fontSize: "300px" }}>R</div>
+      {`${fail[a]}` ? (
+        <div style={{ fontSize: "100px" }}>R</div>
       ) : (
-        <div style={{ fontSize: "300px" }}>
+        <div style={{ fontSize: "100px" }}>
           <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:
           <span>{seconds < 10 ? `0${seconds}` : seconds}</span>.
           <span>{milliseconds < 100 ? `0${milliseconds}` : milliseconds}</span>
@@ -145,7 +254,13 @@ function Timer() {
           </div>
         </div>
         {/* //// */}
-        <div></div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div>1 : {fail.value1 ? "R" : list.value1} </div>
+          <div>2 : {fail.value2 ? "R" : list.value2}</div>
+          <div>3 : {fail.value3 ? "R" : list.value3}</div>
+          <div>4 : {fail.value4 ? "R" : list.value4}</div>
+          <div>5 : {fail.value5 ? "R" : list.value5}</div>
+        </div>
         {/* //// */}
       </div>
     </div>
