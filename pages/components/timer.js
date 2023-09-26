@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function Timer() {
+export default function Timer() {
   const [isRunning, setIsRunning] = useState(false);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -15,13 +15,11 @@ function Timer() {
   });
   const [switchFail, setSwitchFail] = useState(false);
   const arr = [];
-  ///count 5 minutes
   const initialMinutes = 5;
   const [minutess, setMinutess] = useState(initialMinutes);
   const [secondss, setSecondss] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [enjuuk, setEnjuuk] = useState(true);
-  const [dta, setDta] = useState([]);
   const [list, setList] = useState({
     value1: "00:00.00",
     value2: "00:00.00",
@@ -77,6 +75,7 @@ function Timer() {
 
     return () => clearInterval(interval);
   }, [isRunning]);
+
   ///
 
   const startTimer = () => {
@@ -106,7 +105,7 @@ function Timer() {
   };
 
   const formatTime = (time) => (time < 10 ? `0${time}` : time);
-  ///
+
   const start = () => {
     if (a === 5) {
     } else {
@@ -248,30 +247,40 @@ function Timer() {
   const tryCount = () => {
     setA((prevA) => prevA + 1);
   };
-  console.log(fail[0]);
+  const rUseg = {
+    color: "red",
+    fontSize: "200px",
+    display: "flex",
+    justifyContent: "center",
+  };
+  const undsenTsag = {
+    fontSize: "200px",
+    display: "flex",
+    justifyContent: "center",
+  };
   return (
     <div>
+      {/* Undsen tsag  */}
       {Object.values(fail)[a] ? (
         <div></div>
       ) : switchFail ? (
-        <div style={{ fontSize: "100px" }}>R</div>
+        <div style={rUseg}>R</div>
       ) : (
-        <div style={{ fontSize: "100px" }}>
+        <div style={undsenTsag}>
           <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:
           <span>{seconds < 10 ? ` 0${seconds}` : seconds}</span>.
           <span>{milliseconds < 100 ? `0${milliseconds}` : milliseconds}</span>
         </div>
       )}
+      {/*  */}
       {enjuuk ? <button onClick={start}>Start</button> : <div></div>}
+      {isRunning ? <button onClick={stop}>Stop</button> : <div></div>}
 
-      <button onClick={stop}>Stop</button>
       {isRunning ? <button onClick={failClick}>R</button> : <div></div>}
-      {/* <button onClick={failClick}>R</button> */}
       <div>try count</div>
       <h1>{a} / 5</h1>
       <button onClick={resetTimer}>Reset</button>
       <div>
-        {/* /// */}
         <div style={{ fontSize: 40 }}>
           <div>Countdown Timer</div>
           <div className="timer">
@@ -283,7 +292,6 @@ function Timer() {
             </button>
           </div>
         </div>
-        {/* //// */}
         <div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {Object.entries(list).map(([key, value]) => {
@@ -293,10 +301,7 @@ function Timer() {
             })}
           </div>
         </div>
-        {/* //// */}
       </div>
     </div>
   );
 }
-
-export default Timer;
