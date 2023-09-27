@@ -81,7 +81,9 @@ export default function Timer() {
   const startTimer = () => {
     setIsActive(true);
   };
-
+  const stopTimer = () => {
+    setIsActive(false);
+  };
   const resetTimer = () => {
     setList({
       value1: "00:00.00",
@@ -98,7 +100,7 @@ export default function Timer() {
     setSeconds(0);
     setFail(false);
     setMilliseconds(0);
-    setMinutess(0);
+    setMinutess(5);
     setSecondss(0);
     setEnjuuk(true);
     setSwitchFail(false);
@@ -255,8 +257,53 @@ export default function Timer() {
   };
   const undsenTsag = {
     fontSize: "200px",
+    width: "55%",
+  };
+  const undsenTsagContainer = {
+    width: "100%",
     display: "flex",
     justifyContent: "center",
+    color: "#00beff",
+  };
+  const tryCountStyle = {
+    color: "#a9c939",
+    fontSize: "150px",
+  };
+  const tryCountStyle1 = {
+    display: "flex",
+    flexDirection: "row",
+    color: "#ccc",
+    fontSize: "50px",
+  };
+  const tryCountStyle2 = {
+    color: "#ccc",
+    fontSize: "50px",
+    marginTop: "100px",
+  };
+  const tryCountStyle3 = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    fontSize: "40px",
+    width: "300px",
+    // backgroundColor: "red",
+  };
+  const tavanTry = {
+    color: "#9bc71a",
+    fontSize: "25px",
+  };
+  const tavanTry1 = {
+    display: "flex",
+    flexDirection: "column",
+    fontSize: "30px",
+  };
+  const timeRemain = {
+    color: "#9bc71a",
+    fontSize: "25px",
+  };
+  const countDown = {
+    color: "#00ac2d",
+    fontSize: "150px",
   };
   return (
     <div>
@@ -266,39 +313,58 @@ export default function Timer() {
       ) : switchFail ? (
         <div style={rUseg}>R</div>
       ) : (
-        <div style={undsenTsag}>
-          <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:
-          <span>{seconds < 10 ? ` 0${seconds}` : seconds}</span>.
-          <span>{milliseconds < 100 ? `0${milliseconds}` : milliseconds}</span>
+        <div style={undsenTsagContainer}>
+          <div style={undsenTsag}>
+            <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:
+            <span>{seconds < 10 ? ` 0${seconds}` : seconds}</span>.
+            <span>
+              {milliseconds < 100 ? `0${milliseconds}` : milliseconds}
+            </span>
+          </div>
         </div>
       )}
       {/*  */}
       {enjuuk ? <button onClick={start}>Start</button> : <div></div>}
       {isRunning ? <button onClick={stop}>Stop</button> : <div></div>}
-
       {isRunning ? <button onClick={failClick}>R</button> : <div></div>}
-      <div>try count</div>
-      <h1>{a} / 5</h1>
-      <button onClick={resetTimer}>Reset</button>
-      <div>
-        <div style={{ fontSize: 40 }}>
-          <div>Countdown Timer</div>
-          <div className="timer">
-            {formatTime(minutess)}:{formatTime(secondss)}
-          </div>
-          <div className="buttons">
-            <button onClick={startTimer} disabled={isActive}>
-              Start
-            </button>
+      <div style={{ display: "flex" }}>
+        <div>
+          <div style={{ color: "#9bc71a", fontSize: "25px" }}>Try count</div>
+          <div style={tryCountStyle3}>
+            <div style={tryCountStyle1}>
+              <div style={tryCountStyle}>{a}</div>
+              <div style={tryCountStyle2}>/ 5</div>
+            </div>
+            {isRunning ? (
+              <div style={{ color: "#5f7200" }}>Running...</div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
         <div>
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={tavanTry}>Try count</div>
+          <div style={tavanTry1}>
             {Object.entries(list).map(([key, value]) => {
               const lastChar = key.slice(-1);
               const cleanValue = value.toString().replace(/[,]/g, "");
               return <div>{`${lastChar}. ${cleanValue}`}</div>;
             })}
+          </div>
+        </div>
+      </div>
+      <button onClick={resetTimer}>Reset</button>
+      <div>
+        <div style={{ fontSize: 40 }}>
+          <div style={timeRemain}>Time Remaining</div>
+          <div style={countDown}>
+            {formatTime(minutess)}:{formatTime(secondss)}
+          </div>
+          <div>
+            <button onClick={startTimer} disabled={isActive}>
+              Start
+            </button>
+            <button onClick={stopTimer}>Stop</button>
           </div>
         </div>
       </div>
