@@ -27,7 +27,7 @@ export default function Timer() {
     value4: "00:00.00",
     value5: "00:00.00",
   });
-
+  const [minTime, setMinTime] = useState("00:00.00");
   useEffect(() => {
     let countdown;
     if (isActive && minutess >= 0) {
@@ -48,6 +48,11 @@ export default function Timer() {
     return () => clearTimeout(countdown);
   }, [isActive, minutess, secondss]);
   ///
+  useEffect(() => {
+    if (a === 5) {
+      setMinTime(minTimeValue);
+    }
+  });
   useEffect(() => {
     let interval;
 
@@ -77,6 +82,12 @@ export default function Timer() {
   }, [isRunning]);
 
   ///
+  const minTimeValue = Object.values(list).reduce((min, timee) => {
+    if (timee !== "R") {
+      return min === "00:00.00" || timee < min ? timee : min;
+    }
+    return min;
+  }, "00:00.00");
 
   const startTimer = () => {
     setIsActive(true);
@@ -85,6 +96,7 @@ export default function Timer() {
     setIsActive(false);
   };
   const resetTimer = () => {
+    setMinTime("00:00.00");
     setList({
       value1: "00:00.00",
       value2: "00:00.00",
@@ -121,7 +133,9 @@ export default function Timer() {
     }
     arr.push(a + 1);
   };
+
   const stop = () => {
+    setMinTime(minTimeValue);
     setIsRunning(false);
     setEnjuuk(true);
     switch (a) {
@@ -305,6 +319,9 @@ export default function Timer() {
     color: "#00ac2d",
     fontSize: "150px",
   };
+  const bestTime = {
+    fontSize: "100px",
+  };
   return (
     <div>
       {/* Undsen tsag  */}
@@ -323,10 +340,11 @@ export default function Timer() {
           </div>
         </div>
       )}
-      {/*  */}
+      {/* undsen tsagnii buttonuud */}
       {enjuuk ? <button onClick={start}>Start</button> : <div></div>}
       {isRunning ? <button onClick={stop}>Stop</button> : <div></div>}
       {isRunning ? <button onClick={failClick}>R</button> : <div></div>}
+      {/* turshsan too */}
       <div style={{ display: "flex" }}>
         <div>
           <div style={{ color: "#9bc71a", fontSize: "25px" }}>Try count</div>
@@ -342,16 +360,25 @@ export default function Timer() {
             )}
           </div>
         </div>
+        {/* list */}
         <div>
-          <div style={tavanTry}>Try count</div>
+          <div style={tavanTry}>Try ㅤ Run time</div>
           <div style={tavanTry1}>
             {Object.entries(list).map(([key, value]) => {
               const lastChar = key.slice(-1);
               const cleanValue = value.toString().replace(/[,]/g, "");
-              return <div>{`${lastChar}. ${cleanValue}`}</div>;
+              return <div>{`${lastChar}.  ㅤ ${cleanValue}`}</div>;
             })}
           </div>
         </div>
+        {/* best time */}
+        <div>
+          <div style={{ fontSize: 40 }}>
+            <div style={timeRemain}>Rank BestTime</div>
+            <div style={bestTime}>{minTime}</div>
+          </div>
+        </div>
+        {/*  */}
       </div>
       <button onClick={resetTimer}>Reset</button>
       <div>
